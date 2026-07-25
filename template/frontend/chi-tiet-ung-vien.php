@@ -172,6 +172,49 @@ $cvUploadedAt = candidateDetailDate($candidate->cv_uploaded_at ?? '', 'Äang cáº
 $breadcrumbUrl = XC_URL.'/quan-ly-ung-vien.html';
 ?>
 
+<style>
+.candidate-page{background:#f4f5f6;padding:24px 20px 36px;overflow:hidden}
+.candidate-page *{box-sizing:border-box}
+.cd-container{width:100%;max-width:1280px;margin:0 auto}
+.cd-breadcrumb{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;color:#777;font-size:13px;line-height:1.5}
+.cd-breadcrumb a{color:#0d4e96;font-weight:700}
+.cd-hero{position:relative;overflow:hidden;padding:26px;border-radius:20px;background:linear-gradient(135deg,#0d4e96,#155fae 55%,#844404);color:#fff}
+.cd-hero:after{position:absolute;top:-70px;right:-70px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.12);content:""}
+.cd-hero-inner{position:relative;z-index:1;display:flex;align-items:center;gap:20px}
+.cd-avatar{display:flex;flex:0 0 110px;width:110px;height:110px;align-items:center;justify-content:center;overflow:hidden;border:4px solid rgba(255,255,255,.35);border-radius:24px;background:#fff;color:#fff;font-size:36px;font-weight:800}
+.cd-hero h1{margin:0 0 6px;font-size:28px;line-height:1.3;color:#fff;overflow-wrap:anywhere}
+.cd-position{margin-bottom:12px;font-size:15px;line-height:1.55}
+.cd-tags,.cd-actions,.cd-skill-list,.cd-file-actions,.cd-candidate-meta{display:flex;flex-wrap:wrap;gap:8px}
+.cd-tag{padding:6px 10px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:rgba(255,255,255,.16);font-size:12px;font-weight:700;line-height:1.35}
+.cd-actions{margin-top:18px;gap:10px}
+.cd-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border:1px solid transparent;border-radius:12px;font-size:14px;font-weight:800;line-height:1.4;text-align:center;cursor:pointer}
+.cd-btn-outline{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff}
+.cd-btn[disabled]{cursor:not-allowed;opacity:.7}
+.cd-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;margin-top:18px}
+.cd-main,.cd-sidebar{min-width:0}
+.cd-card{padding:20px;border:1px solid #e9eef5;border-radius:18px;background:#fff;box-shadow:0 4px 18px rgba(13,78,150,.06)}
+.cd-card+.cd-card{margin-top:14px}
+.cd-title{display:flex;align-items:center;gap:8px;margin:0 0 14px;color:#111;font-size:18px;font-weight:800;line-height:1.4}
+.cd-title i{color:#0d4e96;font-size:20px}
+.cd-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cd-info{min-width:0;padding:12px;border:1px solid #edf2f7;border-radius:14px;background:#f8fafc}
+.cd-label{margin-bottom:5px;color:#888;font-size:11px;line-height:1.4}
+.cd-value{color:#222;font-size:13px;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+.cd-content{color:#444;font-size:14px;line-height:1.8;overflow-wrap:anywhere}
+.cd-content ul{margin:0;padding-left:18px}.cd-content li{margin-bottom:7px}
+.cd-timeline{display:flex;flex-direction:column;gap:14px}
+.cd-time-item{min-width:0;padding-left:14px;border-left:3px solid #0d4e96}
+.cd-time-item h4{margin:0 0 4px;color:#111;font-size:14px;line-height:1.5;overflow-wrap:anywhere}.cd-time-item span{color:#777;font-size:12px}.cd-time-item p{margin:6px 0 0;color:#555;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
+.cd-skill{padding:7px 10px;border:1px solid #dbeafe;border-radius:999px;background:#eef5ff;color:#0d4e96;font-size:12px;font-weight:700;line-height:1.35}
+.cd-highlight{padding:14px;border-left:4px solid #0d4e96;border-radius:14px;background:#eef5ff;color:#24415f;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
+.cd-file{display:flex;align-items:flex-start;gap:10px;padding:14px;border:1px dashed #b8c7d9;border-radius:14px;background:#f8fafc}.cd-file>div{min-width:0}.cd-file i{flex:0 0 auto;color:#0d4e96;font-size:28px}.cd-file strong{display:block;color:#111;font-size:13px;overflow-wrap:anywhere}.cd-file p{margin:3px 0 0;color:#777;font-size:12px;line-height:1.55}
+.cd-download-btn,.cd-preview-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 12px;border-radius:10px;font-size:12px;font-weight:800;line-height:1.4;text-align:center}.cd-download-btn{background:#0d4e96;color:#fff}.cd-preview-btn{border:1px solid #dbeafe;background:#fff;color:#0d4e96}
+.cd-featured-candidates{display:flex;flex-direction:column;gap:10px}.cd-candidate-mini{display:flex;align-items:center;gap:10px;min-width:0;padding:10px;border:1px solid #edf2f7;border-radius:14px;background:#f8fafc;color:inherit}.cd-candidate-avatar{display:flex;flex:0 0 46px;width:46px;height:46px;align-items:center;justify-content:center;overflow:hidden;border:3px solid #fff;border-radius:50%;color:#fff;font-size:15px;font-weight:800;box-shadow:0 2px 8px rgba(13,78,150,.18)}.cd-candidate-info{min-width:0}.cd-candidate-info h4{margin:0 0 3px;color:#111;font-size:13px;line-height:1.35;overflow-wrap:anywhere}.cd-candidate-info p{margin:0;color:#666;font-size:11px;line-height:1.45;overflow-wrap:anywhere}.cd-candidate-meta{gap:5px;margin-top:6px}.cd-candidate-meta span{max-width:100%;padding:3px 7px;border:1px solid #dbeafe;border-radius:999px;background:#fff;color:#0d4e96;font-size:10px;font-weight:700;overflow-wrap:anywhere}
+@media (max-width:1024px){.cd-layout{grid-template-columns:1fr}.cd-sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.cd-sidebar .cd-card{margin-top:0}.cd-sidebar .cd-card:first-child{grid-column:1/-1}}
+@media (max-width:768px){.candidate-page{padding:18px 14px 28px}.cd-hero{padding:22px}.cd-hero-inner{align-items:flex-start;flex-direction:column;gap:14px}.cd-avatar{flex-basis:88px;width:88px;height:88px;border-radius:20px;font-size:29px}.cd-hero h1{font-size:22px}.cd-position{font-size:14px}.cd-grid{grid-template-columns:1fr}.cd-sidebar{grid-template-columns:1fr}.cd-sidebar .cd-card:first-child{grid-column:auto}.cd-card{padding:16px}.cd-title{font-size:17px}}
+@media (max-width:480px){.candidate-page{padding:14px 12px 24px}.cd-breadcrumb{gap:5px;font-size:12px}.cd-hero{padding:18px;border-radius:16px}.cd-tags{gap:6px}.cd-tag{max-width:100%;padding:5px 8px;font-size:11px;overflow-wrap:anywhere}.cd-actions{flex-direction:column}.cd-btn{width:100%}.cd-card{padding:14px;border-radius:14px}.cd-title{font-size:16px}.cd-file{flex-direction:column}.cd-file-actions{flex-direction:column;width:100%}.cd-file-actions a{width:100%}.cd-skill-list{gap:6px}.cd-skill{font-size:11px}.cd-candidate-mini{align-items:flex-start}}
+</style>
+
 <main class="candidate-page">
   <div class="cd-container">
     <div class="cd-breadcrumb">

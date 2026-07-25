@@ -136,6 +136,7 @@ $siteApiBaseUrl = $siteBasePath.'/api';
   <a href="<?php echo XC_URL; ?>" class="logo" aria-label="Trang chủ">
     <div class="logo-text"><img src="<?php echo $template_path; ?>/assets/images/logo.png" alt="Logo"></div>
   </a>
+  <div class="mobile-site-title">Cổng thông tin việc làm Trường Cao đẳng Kon Tum</div>
 
   <nav class="header-nav desktop-nav">
     <a href="<?php echo XC_URL; ?>">Trang chủ</a>

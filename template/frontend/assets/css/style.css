@@ -941,6 +941,7 @@ body.menu-open .header-inner {
 .header-top{border-bottom:1px solid #edf1f7;background:#fff}
 .header-top-inner{max-width:none;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:18px}
 .logo-text img{width:70px!important;height:auto}
+.mobile-site-title{display:none}
 .header-feature-links{display:flex;align-items:center;gap:8px;flex:1;min-width:0;justify-content:center}
 .header-feature-link{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;background:#f7faff;border:1px solid #e8f0fe;color:#243b53;font-size:13px;font-weight:700;white-space:nowrap;transition:all .18s}
 .header-feature-link:hover{transform:translateY(-1px);background:#eef6ff;border-color:#c9ddff;color:#0d4e96;box-shadow:0 8px 20px rgba(13,78,150,.08)}
@@ -974,8 +975,8 @@ body.menu-open .header-inner {
 .hamburger{border:1px solid #e4ebf5;background:#fff}
 .mobile-quick-actions{display:none}
 @media(max-width:1100px){.header-feature-link{font-size:12px;padding:9px 10px}.header-feature-link i{width:26px;height:26px}.btn-register,.btn-post,.btn-login{padding:8px 11px;font-size:12px}.app-contact-list{gap:6px}.app-contact-item{font-size:11px;padding:6px 8px}}
-@media(max-width:900px){.app-bar-inner{min-height:auto;align-items:flex-start;padding:12px 16px}.app-banner-right{display:none}.header-top-inner{padding:12px 14px}.header-feature-links{display:none}.header-actions{margin-left:auto}.btn-register,.btn-post{display:none}.header-inner{height:0;padding:0}.header-nav{display:none}.header-right{position:absolute;right:14px;top:50%;transform:translateY(-50%);z-index:3}.header-top{position:relative}.hamburger{display:flex}.btn-login{display:none}.header-account-name{max-width:110px}.mobile-quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 18px;border-bottom:1px solid #f1f1f1}.mobile-quick-actions .mm-btn-login,.mobile-quick-actions .mm-btn-ntd{margin:0}.mobile-menu-drawer{max-width:380px}}
-@media(max-width:480px){.app-banner-icon{width:40px;height:40px;font-size:21px}.app-banner-title{font-size:15px}.app-banner-sub{font-size:11px}.app-contact-item{width:100%;justify-content:flex-start}.logo-text img{width:104px!important}.header-top-inner{min-height:62px}.header-account-name,.header-account-toggle>i{display:none}.header-account-toggle{padding:4px}.mobile-menu-drawer{width:88%}}
+@media(max-width:900px){.app-bar{display:none}.header-top-inner{padding:12px 14px;gap:10px}.mobile-site-title{display:block;flex:1;min-width:0;color:#0d4e96;font-size:14px;font-weight:800;line-height:1.35}.header-feature-links{display:none}.header-actions{margin-left:auto}.btn-register,.btn-post{display:none}.header-inner{height:0;padding:0}.header-nav{display:none}.header-right{position:absolute;right:14px;top:50%;transform:translateY(-50%);z-index:3}.header-top{position:relative}.hamburger{display:flex}.btn-login{display:none}.header-account-name{max-width:110px}.mobile-quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 18px;border-bottom:1px solid #f1f1f1}.mobile-quick-actions .mm-btn-login,.mobile-quick-actions .mm-btn-ntd{margin:0}.mobile-menu-drawer{max-width:380px}}
+@media(max-width:480px){.logo-text img{width:65px!important}.mobile-site-title{font-size:13px}.header-top-inner{min-height:62px}.header-account-name,.header-account-toggle>i{display:none}.header-account-toggle{padding:4px}.mobile-menu-drawer{width:88%}}
 
 
 .desktop-nav{

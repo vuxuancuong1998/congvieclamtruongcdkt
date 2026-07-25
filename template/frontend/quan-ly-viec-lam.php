@@ -45,7 +45,9 @@ function jobsPageTypeLabel($job){
 
 function jobsPageUrl($targetPage){
   $params = $_GET;
-  unset($params['page']);
+  // `rt` is added internally by the rewrite rule. Keeping it in the query
+  // string overrides the /page/{n} route and always sends the user to page 1.
+  unset($params['page'], $params['rt']);
   $url = general::getInstance()->permalink($targetPage, 'manage_jobs_page');
   return $url.(count($params) ? (strpos($url, '?') === false ? '?' : '&').http_build_query($params) : '');
 }
@@ -53,23 +55,16 @@ function jobsPageUrl($targetPage){
 function jobsPagePaginationItems($currentPage, $totalPages){
   $currentPage = max(1, (int)$currentPage);
   $totalPages = max(1, (int)$totalPages);
-  if($totalPages <= 7){
+  if($totalPages <= 6){
     return range(1, $totalPages);
   }
 
-  if($currentPage <= 3){
-    $pages = range(1, 5);
-  }elseif($currentPage >= $totalPages - 2){
-    $pages = range($totalPages - 4, $totalPages);
+  if($currentPage <= 4){
+    $pages = range(1, 4);
+  }elseif($currentPage >= $totalPages - 3){
+    $pages = array(1, '...', $totalPages - 3, $totalPages - 2, $totalPages - 1, $totalPages);
   }else{
-    $pages = range($currentPage - 2, $currentPage + 1);
-  }
-
-  if(end($pages) < $totalPages - 1){
-    $pages[] = '...';
-  }
-  if(!in_array($totalPages, $pages, true)){
-    $pages[] = $totalPages;
+    $pages = array(1, '...', $currentPage - 1, $currentPage, $currentPage + 1, '...', $totalPages);
   }
   return $pages;
 }
@@ -171,7 +166,7 @@ function jobsPagePaginationItems($currentPage, $totalPages){
             <div class="job-box-head">
               <div class="job-logo" style="background:#eef6ff;color:#0d4e96">
                 <?php if(!empty($job->logo_url)){ ?>
-                  <img src="<?php echo jobsPageH($company_logo); ?>" alt="<?php echo jobsPageH($companyName); ?>">
+                  <img src="<?php echo XC_URL .'/'.jobsPageH($company_logo); ?>" alt="<?php echo jobsPageH($companyName); ?>">
                 <?php }else{ ?>
                   <span class="job-logo-text"><?php echo jobsPageH($logoText); ?></span>
                 <?php } ?>

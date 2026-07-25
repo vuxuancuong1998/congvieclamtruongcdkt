@@ -494,6 +494,327 @@ function homeNewsUrl($news){
   @media (prefers-reduced-motion: reduce) {
     .hero-slider-background { transition: opacity .2s ease; transform: none; }
   }
+
+
+
+
+
+
+/* ============================================================
+   SECTION
+============================================================ */
+.sv-section {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 24px;
+}
+
+.section-inner {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.section-title {
+  position: relative;
+  padding-left: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.section-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 4px;
+  background: #2f6fed;
+  border-radius: 2px;
+}
+
+.see-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2f6fed;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.see-all:hover {
+  text-decoration: underline;
+}
+
+/* ============================================================
+   SLIDER WRAP + TRACK
+   (giữ đúng behavior JS hiện có: #svTrack dịch chuyển bằng transform)
+============================================================ */
+#svSliderWrap {
+  overflow: hidden;
+  position: relative;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+#svTrack {
+  display: flex;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  width: 100%;
+}
+
+/* ============================================================
+   GRID (mỗi .sv-grid = 1 trang / page)
+============================================================ */
+.sv-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* mobile-first: 1 cột */
+  gap: 12px;
+  width: 100%;
+  min-width: 100%;   /* mỗi trang chiếm trọn 1 "slide" trong track */
+  max-width: 100%;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   CARD
+============================================================ */
+.sv-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  min-width: 0; /* QUAN TRỌNG: chặn card tự phình rộng hơn cột grid */
+  padding: 20px 14px 16px;
+  box-sizing: border-box;
+  border: 1.5px solid #2f6fed;
+  border-radius: 20px;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.sv-card:hover {
+  box-shadow: 0 6px 16px rgba(47, 111, 237, 0.15);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   AVATAR
+============================================================ */
+.sv-avatar-wrap {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #2f6fed;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.sv-avatar-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sv-avatar-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   TEXT INFO
+============================================================ */
+.sv-name {
+  width: 100%;
+  font-weight: 700;
+  font-size: 14px;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sv-dob {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #7a7a7a;
+  font-size: 12px;
+  margin-bottom: 10px;
+  white-space: nowrap;
+}
+
+.sv-dob i {
+  font-size: 11px;
+}
+
+.sv-major {
+  max-width: 100%;
+  background: #eaf1fd;
+  color: #2f6fed;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   BADGES
+============================================================ */
+.sv-badge,
+.sv-badge-xuat-sac {
+  position: absolute;
+  top: -1px;
+  right: 16px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 0 0 8px 8px;
+  color: #fff;
+}
+
+.sv-badge { background: #2f6fed; }
+.sv-badge-xuat-sac { background: #f59e0b; }
+
+/* ============================================================
+   PAGINATION (dots + prev/next)
+============================================================ */
+.sv-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.jobs-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid #2f6fed;
+  border-radius: 50%;
+  background: #fff;
+  color: #2f6fed;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.jobs-nav:hover {
+  background: #2f6fed;
+  color: #fff;
+}
+
+.jobs-dots-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sv-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: #cdd8f0;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease, width 0.2s ease;
+}
+
+.sv-dot.active {
+  background: #2f6fed;
+  width: 20px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   RESPONSIVE — mobile-first
+============================================================ */
+@media (min-width: 400px) {
+  .sv-grid { gap: 14px; }
+}
+
+@media (min-width: 576px) {
+  .sv-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .sv-avatar-wrap { width: 80px; height: 80px; }
+  .sv-name { font-size: 15px; }
+}
+
+@media (min-width: 768px) {
+  .sv-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .sv-card { padding: 22px 16px 18px; }
+}
+
+@media (min-width: 992px) {
+  .sv-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .sv-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .sv-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+  }
+  .sv-avatar-wrap { width: 90px; height: 90px; }
+  .sv-name { font-size: 16px; }
+  .sv-dob, .sv-major { font-size: 13px; }
+  .sv-card { padding: 24px 16px 20px; }
+}
+
+@media (min-width: 1536px) {
+  .sv-grid { gap: 26px; }
+  .sv-card { padding: 26px 18px 22px; }
+}
 </style>
 <section class="hero hero-slider" id="heroSlider" aria-roledescription="carousel" aria-label="Banner việc làm nổi bật">
   <div class="hero-slider-backgrounds" aria-hidden="true">
@@ -1928,27 +2249,44 @@ $svPages = array_chunk($featuredStudents, 12);
 ?>
 <section class="sv-section">
   <div class="section-inner">
+
     <div class="section-header">
       <div class="section-title">Ứng viên nổi bật</div>
-      <a href="<?php echo XC_URL; ?>/quan-ly-ung-vien.html" class="see-all">Xem tất cả <i class="ti ti-arrow-right"></i></a>
+      <a href="<?php echo XC_URL; ?>/quan-ly-ung-vien.html" class="see-all">
+        Xem tất cả <i class="ti ti-arrow-right"></i>
+      </a>
     </div>
 
-    <div id="svSliderWrap" style="overflow:hidden;position:relative;border-radius:12px">
-      <div id="svTrack" style="display:flex;transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);will-change:transform">
+    <div id="svSliderWrap">
+      <div id="svTrack">
         <?php foreach ($svPages as $pageStudents): ?>
-        <div class="sv-grid" style="min-width:100%;box-sizing:border-box;flex-shrink:0">
+        <div class="sv-grid">
           <?php foreach ($pageStudents as $s): ?>
-          <a href="<?= htmlspecialchars($s['url'] ?? '#', ENT_QUOTES, 'UTF-8') ?>" class="sv-card" style="display:block;text-decoration:none;color:inherit">
+          <a href="<?= htmlspecialchars($s['url'] ?? '#', ENT_QUOTES, 'UTF-8') ?>" class="sv-card">
             <!-- <span class="sv-badge">Ứng viên</span> -->
             <!-- <span class="sv-badge-xuat-sac">Xuất sắc</span> -->
             <div class="sv-avatar-wrap">
-              <?php if(!empty($s['avatar'])): ?>
-                <img src="<?= htmlspecialchars($s['avatar'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($s['name'], ENT_QUOTES, 'UTF-8') ?>" class="sv-avatar-photo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <?php if (!empty($s['avatar'])): ?>
+                <img src="<?= htmlspecialchars($s['avatar'], ENT_QUOTES, 'UTF-8') ?>"
+                     alt="<?= htmlspecialchars($s['name'], ENT_QUOTES, 'UTF-8') ?>"
+                     class="sv-avatar-photo" loading="lazy"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <?php endif; ?>
-              <div class="sv-avatar-fallback" style="background:<?= htmlspecialchars($s['color'], ENT_QUOTES, 'UTF-8') ?>;<?= !empty($s['avatar']) ? 'display:none' : '' ?>"><?= htmlspecialchars($s['initials'], ENT_QUOTES, 'UTF-8') ?></div>
+              <div class="sv-avatar-fallback"
+                   style="background:<?= htmlspecialchars($s['color'], ENT_QUOTES, 'UTF-8') ?>;<?= !empty($s['avatar']) ? 'display:none' : '' ?>">
+                <?= htmlspecialchars($s['initials'], ENT_QUOTES, 'UTF-8') ?>
+              </div>
             </div>
-            <div class="sv-name" title="<?= htmlspecialchars($s['name'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($s['name'], ENT_QUOTES, 'UTF-8') ?></div>
-            <div class="sv-dob"><i class="ti ti-calendar" style="font-size:10px;vertical-align:-1px"></i> <?= htmlspecialchars($s['dob'], ENT_QUOTES, 'UTF-8') ?></div>
+
+            <div class="sv-name" title="<?= htmlspecialchars($s['name'], ENT_QUOTES, 'UTF-8') ?>">
+              <?= htmlspecialchars($s['name'], ENT_QUOTES, 'UTF-8') ?>
+            </div>
+
+            <div class="sv-dob">
+              <i class="ti ti-calendar"></i>
+              <?= htmlspecialchars($s['dob'], ENT_QUOTES, 'UTF-8') ?>
+            </div>
+
             <div class="sv-major"><?= htmlspecialchars($s['major'], ENT_QUOTES, 'UTF-8') ?></div>
           </a>
           <?php endforeach; ?>
@@ -1958,14 +2296,19 @@ $svPages = array_chunk($featuredStudents, 12);
     </div>
 
     <div class="sv-pagination jobs-pagination" id="svPagination" aria-label="Phân trang sinh viên nổi bật">
-      <button type="button" class="jobs-nav jobs-nav-prev" id="svPrev" aria-label="Trang trước"><i class="ti ti-chevron-left"></i></button>
+      <button type="button" class="jobs-nav jobs-nav-prev" id="svPrev" aria-label="Trang trước">
+        <i class="ti ti-chevron-left"></i>
+      </button>
       <div class="jobs-dots-wrap" id="svDotsWrap">
         <?php for ($i = 0, $svPageCount = count($svPages); $i < $svPageCount; $i++): ?>
         <button type="button" class="sv-dot<?= $i === 0 ? ' active' : '' ?>" onclick="svGoTo(<?= $i ?>)" aria-label="Trang <?= $i + 1 ?>"></button>
         <?php endfor; ?>
       </div>
-      <button type="button" class="jobs-nav jobs-nav-next" id="svNext" aria-label="Trang sau"><i class="ti ti-chevron-right"></i></button>
+      <button type="button" class="jobs-nav jobs-nav-next" id="svNext" aria-label="Trang sau">
+        <i class="ti ti-chevron-right"></i>
+      </button>
     </div>
+
   </div>
 </section>
 
