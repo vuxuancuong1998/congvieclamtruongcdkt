@@ -15,7 +15,7 @@
       </div>
       <div class="about-visual">
         <div class="about-card-top">
-          <div class="about-logo-mark">VL</div>
+          <div class="about-logo-mark"><img src="<?php echo XC_URL; ?>/template/frontend/assets/images/logo.png" alt="Logo"></div>
           <div>
             <h3>Cổng thông tin việc làm</h3>
             <p>Nơi dữ liệu tuyển dụng, hồ sơ ứng viên và cơ hội nghề nghiệp được kết nối tập trung.</p>

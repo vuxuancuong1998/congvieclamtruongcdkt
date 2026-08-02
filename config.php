@@ -23,7 +23,8 @@ if (!defined('XVN_CONFIG_LOADED')) {
 	define('DB_USER', 'root'); //database user
 	define('DB_PASSWORD', ''); //database password
 	define('DB_HOST', 'localhost'); //sql server
-
+	// $mail_acc = $this->helper->get_config('smtp_protocol');
+	// $mail_pass = $this->helper->get_config('smtp_password');
 	/*** define mailer ***/
 	define('MAIL_PROTOCOL', 'SMTP');
 	define('MAIL_HOST', 'smtp.gmail.com');

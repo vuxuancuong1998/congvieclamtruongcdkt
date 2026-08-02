@@ -30,7 +30,7 @@ Class indexController Extends baseController
 			LEFT JOIN hicrm_provinces pr ON pr.id = p.province_id
 			LEFT JOIN hicrm_salary s ON s.id = p.salary_id
 			WHERE p.status = 'published'
-				AND COALESCE(p.published_at, p.created_at) >= DATE_SUB(NOW(), INTERVAL 30 DAY)");
+				AND COALESCE(p.published_at, p.created_at) >= DATE_SUB(NOW(), INTERVAL 75 DAY)");
 		$featured_total = $db->fetch_object(true);
 		$this->view->data['featured_jobs_total_pages'] = max(1, ceil((int)$featured_total->total / 15));
 
@@ -41,7 +41,7 @@ Class indexController Extends baseController
 			LEFT JOIN hicrm_provinces pr ON pr.id = p.province_id
 			LEFT JOIN hicrm_salary s ON s.id = p.salary_id
 			WHERE p.status = 'published'
-				AND COALESCE(p.published_at, p.created_at) >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+				AND COALESCE(p.published_at, p.created_at) >= DATE_SUB(NOW(), INTERVAL 75 DAY)
 			ORDER BY COALESCE(p.published_at, p.created_at) DESC, p.deadline IS NULL ASC, p.deadline ASC, p.id DESC
 			LIMIT 15");
 		$this->view->data['featured_jobs'] = $db->fetch_object();
@@ -125,6 +125,13 @@ Class indexController Extends baseController
 			LIMIT 11");
 		$this->view->data['job_categories_with_counts'] = $db->fetch_object();
 
+		$db->query("SELECT COUNT(ca.id) AS total
+			FROM hicrm_candidates ca
+			LEFT JOIN hicrm_users u ON u.id = ca.user_id
+			WHERE ca.status = 3 AND ca.is_seeking = 1 AND (u.id IS NULL OR u.user_status = 1)");
+		$cand_total = $db->fetch_object(true);
+		$this->view->data['featured_candidates_total_pages'] = max(1, ceil((int)$cand_total->total / 12));
+
 		$db->query("SELECT ca.*, u.user_email, u.user_phone, jc.job_category_name, desired_pr.province_name AS desired_province_name, sal.salary_name
 			FROM hicrm_candidates ca
 			LEFT JOIN hicrm_users u ON u.id = ca.user_id
@@ -133,7 +140,7 @@ Class indexController Extends baseController
 			LEFT JOIN hicrm_salary sal ON sal.id = ca.desired_salary
 			WHERE ca.status = 3 AND ca.is_seeking = 1 AND (u.id IS NULL OR u.user_status = 1)
 			ORDER BY ca.updated_at DESC, ca.id DESC
-			LIMIT 24");
+			LIMIT 12");
 		$this->view->data['featured_candidates'] = $db->fetch_object();
 
 		$db->query("SELECT *

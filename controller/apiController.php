@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Project: thuvien.
  * File: tourController.php.
@@ -538,6 +538,84 @@ Class apiController extends baseController
 		$html = '';
 		foreach((array)$jobs as $job){ $html .= $this->homeApiJobCard($job, 'urgent-job-card', true); }
 		$this->homeApiJson(array('status' => 200, 'page' => $page, 'total_pages' => $totalPages, 'html' => $html));
+	}
+	public function homeFeaturedCandidates()
+	{
+		global $db;
+		$page    = max(1, intval(isset($_GET['page']) ? $_GET['page'] : 1));
+		$perPage = 12;
+		// Đếm tổng ứng viên để tính total_pages động
+		$db->query("SELECT COUNT(ca.id) AS total
+			FROM hicrm_candidates ca
+			LEFT JOIN hicrm_users u ON u.id = ca.user_id
+			WHERE ca.status = 3 AND ca.is_seeking = 1
+			  AND (u.id IS NULL OR u.user_status = 1)");
+		$total      = intval($db->fetch_object(true)->total);
+		$totalPages = max(1, ceil($total / $perPage));
+		if($page > $totalPages){ $page = $totalPages; }
+		$offset = ($page - 1) * $perPage;
+		$db->query("SELECT ca.*, u.user_email, u.user_phone,
+				jc.job_category_name,
+				desired_pr.province_name AS desired_province_name,
+				sal.salary_name
+			FROM hicrm_candidates ca
+			LEFT JOIN hicrm_users u ON u.id = ca.user_id
+			LEFT JOIN hicrm_job_categories jc ON jc.id = ca.major
+			LEFT JOIN hicrm_provinces desired_pr ON desired_pr.id = ca.desired_province_id
+			LEFT JOIN hicrm_salary sal ON sal.id = ca.desired_salary
+			WHERE ca.status = 3 AND ca.is_seeking = 1
+			  AND (u.id IS NULL OR u.user_status = 1)
+			ORDER BY ca.updated_at DESC, ca.id DESC
+			LIMIT ".intval($offset).",".intval($perPage));
+		$candidates = $db->fetch_object();
+		$html = '';
+		foreach((array)$candidates as $c){ $html .= $this->homeCandidateCard($c); }
+		$this->homeApiJson(array('status' => 200, 'page' => $page, 'total_pages' => $totalPages, 'html' => $html));
+	}
+	private function homeCandidateCard($candidate)
+	{
+		$id    = (int)(isset($candidate->id) ? $candidate->id : 0);
+		$name  = trim((string)(isset($candidate->full_name) ? $candidate->full_name : (isset($candidate->candidate_name) ? $candidate->candidate_name : '')));
+		if($name === ''){ $name = 'Ứng viên nổi bật'; }
+		$major = trim((string)(isset($candidate->job_category_name) ? $candidate->job_category_name : (isset($candidate->desired_position) ? $candidate->desired_position : '')));
+		if($major === ''){ $major = 'Ứng viên đang tìm việc'; }
+		$url   = general::getInstance()->permalink($id, 'candidate_profile');
+		// Ngày sinh
+		$raw   = isset($candidate->date_of_birth) ? $candidate->date_of_birth : (isset($candidate->birthday) ? $candidate->birthday : (isset($candidate->dob) ? $candidate->dob : ''));
+		$time  = ($raw && $raw !== '') ? @strtotime((string)$raw) : false;
+		$dob   = $time ? date('d/m/Y', $time) : 'Đang cập nhật';
+		// Avatar
+		$avatarRaw = trim((string)(isset($candidate->avatar_url) ? $candidate->avatar_url : (isset($candidate->user_avatar_url) ? $candidate->user_avatar_url : '')));
+		if($avatarRaw !== '' && !preg_match('#^(https?:)?//#i', $avatarRaw) && strpos($avatarRaw, 'data:') !== 0){
+			$avatarRaw = XC_URL.'/'.ltrim($avatarRaw, '/');
+		}
+		// Màu + viết tắt
+		$palette  = array('#0d4e96','#1565c0','#2e7d32','#c62828','#6a1b9a','#00695c','#e65100','#1a237e','#00838f','#37474f');
+		$color    = $palette[$id % count($palette)];
+		$parts    = preg_split('/\s+/', $name);
+		$letters  = '';
+		foreach((array)$parts as $part){
+			if($part !== ''){ $letters .= mb_substr($part, 0, 1, 'UTF-8'); }
+			if(mb_strlen($letters, 'UTF-8') >= 2){ break; }
+		}
+		$initials = mb_strtoupper($letters !== '' ? $letters : mb_substr($name, 0, 2, 'UTF-8'), 'UTF-8');
+		$H = function($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); };
+		// Build HTML — giữ đúng cấu trúc .sv-card như template PHP
+		$html  = '<a href="'.$H($url).'" class="sv-card">';
+		$html .= '<div class="sv-avatar-wrap">';
+		if($avatarRaw !== ''){
+			$html .= '<img src="'.$H($avatarRaw).'" alt="'.$H($name).'" class="sv-avatar-photo" loading="lazy"'
+			       . ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">';
+			$html .= '<div class="sv-avatar-fallback" style="background:'.$H($color).';display:none">'.$H($initials).'</div>';
+		} else {
+			$html .= '<div class="sv-avatar-fallback" style="background:'.$H($color).'">'.$H($initials).'</div>';
+		}
+		$html .= '</div>';
+		$html .= '<div class="sv-name" title="'.$H($name).'">'.$H($name).'</div>';
+		$html .= '<div class="sv-dob"><i class="ti ti-calendar"></i> '.$H($dob).'</div>';
+		$html .= '<div class="sv-major">'.$H($major).'</div>';
+		$html .= '</a>';
+		return $html;
 	}
 	public function getbalance()
 	{
@@ -5889,7 +5967,7 @@ Class apiController extends baseController
 // API Student register
 public function addstudent()
 {
-	if(!$this->requireAdminApiPermission('students', false)){ return; }
+	// if(!$this->requireAdminApiPermission('students', false)){ return; }
 		global $db;
 
 		header('Content-Type: application/json; charset=utf-8');
@@ -7496,7 +7574,7 @@ public function addstudent()
 			$this->candidateProfileApiResponse(array('status' => 409, 'message' => 'Email này đã được sử dụng bởi tài khoản khác.'));
 			return;
 		}
-		$db->query("SELECT id FROM hicrm_candidates WHERE user_id = '".$userId."' LIMIT 1");
+		$db->query("SELECT * FROM hicrm_candidates WHERE user_id = '".$userId."' LIMIT 1");
 		$candidate = $db->num_row() > 0 ? $db->fetch_object(true) : null;
 		if(!$candidate){
 			$db->query("INSERT INTO hicrm_candidates (user_id, full_name, phone, status, profile_completeness, created_at, updated_at) VALUES ('".$userId."', '".$db->escapestring($input['full_name'])."', '".$db->escapestring($input['phone'])."', 0, 0, NOW(), NOW())");
@@ -7510,7 +7588,7 @@ public function addstudent()
 		$cv = $this->candidateProfileUpload('cv_file', $candidateId, 'cv', 5242880, array('pdf','doc','docx'));
 		if($cv['status'] !== 200 && $cv['status'] !== 204){ $this->candidateProfileApiResponse($cv); return; }
 		$avatarUrl = $avatar['status'] === 200 ? $avatar['path'] : trim((string)$candidate->avatar_url);
-		$cvUrl = $cv['status'] === 200 ? $cv['path'] : trim((string)$candidate->cv_url);
+		$cvUrl = $cv['status'] === 200 ? $cv['path'] : trim((string)$candidate->avatar_url);
 		if($avatarUrl === '' || $cvUrl === ''){
 			$this->candidateProfileApiResponse(array('status' => 400, 'message' => 'Vui lòng tải lên ảnh đại diện và CV.'));
 			return;

@@ -1,4 +1,3 @@
-
 <?php require "header.php"; ?>
 <?php
 $featured_jobs = isset($featured_jobs) && is_array($featured_jobs) ? $featured_jobs : array();
@@ -573,7 +572,8 @@ function homeNewsUrl($news){
   display: flex;
   transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
-  width: 100%;
+  /* Không đặt width ở đây — JS sẽ set từng .sv-grid bằng px
+     để tránh browser tính track = N × wrapper_width */
 }
 
 /* ============================================================
@@ -583,9 +583,8 @@ function homeNewsUrl($news){
   display: grid;
   grid-template-columns: 1fr; /* mobile-first: 1 cột */
   gap: 12px;
-  width: 100%;
-  min-width: 100%;   /* mỗi trang chiếm trọn 1 "slide" trong track */
-  max-width: 100%;
+  /* width được set bằng inline style từ JS (= sliderWrap.offsetWidth px)
+     → đảm bảo mỗi trang = đúng bằng chiều rộng vùng nhìn thấy */
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -814,6 +813,29 @@ function homeNewsUrl($news){
 @media (min-width: 1536px) {
   .sv-grid { gap: 26px; }
   .sv-card { padding: 26px 18px 22px; }
+}
+
+/* ============================================================
+   SKELETON LOADER — hiển thị khi đang fetch trang mới
+============================================================ */
+@keyframes svSkeletonPulse {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.sv-card-skeleton {
+  pointer-events: none;
+  border-color: #e8edf3 !important;
+  box-shadow: none !important;
+}
+.sv-skeleton-block {
+  background: linear-gradient(90deg, #e8edf3 25%, #f5f7fa 50%, #e8edf3 75%);
+  background-size: 200% 100%;
+  animation: svSkeletonPulse 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+/* Fade transition khi chuyển trang */
+.sv-grid {
+  transition: opacity 0.25s ease;
 }
 </style>
 <section class="hero hero-slider" id="heroSlider" aria-roledescription="carousel" aria-label="Banner việc làm nổi bật">
@@ -2228,6 +2250,7 @@ $featuredStudents = [
   ['name' => 'Trần Văn Khải', 'dob' => '17/03/2003', 'major' => 'Báo chí', 'color' => '#e65100', 'initials' => 'TK'],
   ['name' => 'Lê Thị Diệu', 'dob' => '03/09/2002', 'major' => 'Ngoại ngữ', 'color' => '#00695c', 'initials' => 'LD'],
 ];
+$sv_total_pages = isset($featured_candidates_total_pages) ? (int)$featured_candidates_total_pages : 1;
 if(!empty($featured_candidates)){
   $featuredStudents = array();
   foreach($featured_candidates as $candidate){
@@ -2245,7 +2268,6 @@ if(!empty($featured_candidates)){
 }else{
   $featuredStudents = array();
 }
-$svPages = array_chunk($featuredStudents, 12);
 ?>
 <section class="sv-section">
   <div class="section-inner">
@@ -2257,14 +2279,13 @@ $svPages = array_chunk($featuredStudents, 12);
       </a>
     </div>
 
-    <div id="svSliderWrap">
+    <div id="svSliderWrap"
+         data-total-pages="<?= (int)$sv_total_pages ?>"
+         data-api-url="<?= htmlspecialchars(XC_URL, ENT_QUOTES, 'UTF-8') ?>/api/homeFeaturedCandidates">
       <div id="svTrack">
-        <?php foreach ($svPages as $pageStudents): ?>
         <div class="sv-grid">
-          <?php foreach ($pageStudents as $s): ?>
+          <?php foreach ($featuredStudents as $s): ?>
           <a href="<?= htmlspecialchars($s['url'] ?? '#', ENT_QUOTES, 'UTF-8') ?>" class="sv-card">
-            <!-- <span class="sv-badge">Ứng viên</span> -->
-            <!-- <span class="sv-badge-xuat-sac">Xuất sắc</span> -->
             <div class="sv-avatar-wrap">
               <?php if (!empty($s['avatar'])): ?>
                 <img src="<?= htmlspecialchars($s['avatar'], ENT_QUOTES, 'UTF-8') ?>"
@@ -2277,21 +2298,17 @@ $svPages = array_chunk($featuredStudents, 12);
                 <?= htmlspecialchars($s['initials'], ENT_QUOTES, 'UTF-8') ?>
               </div>
             </div>
-
             <div class="sv-name" title="<?= htmlspecialchars($s['name'], ENT_QUOTES, 'UTF-8') ?>">
               <?= htmlspecialchars($s['name'], ENT_QUOTES, 'UTF-8') ?>
             </div>
-
             <div class="sv-dob">
               <i class="ti ti-calendar"></i>
               <?= htmlspecialchars($s['dob'], ENT_QUOTES, 'UTF-8') ?>
             </div>
-
             <div class="sv-major"><?= htmlspecialchars($s['major'], ENT_QUOTES, 'UTF-8') ?></div>
           </a>
           <?php endforeach; ?>
         </div>
-        <?php endforeach; ?>
       </div>
     </div>
 
@@ -2299,11 +2316,8 @@ $svPages = array_chunk($featuredStudents, 12);
       <button type="button" class="jobs-nav jobs-nav-prev" id="svPrev" aria-label="Trang trước">
         <i class="ti ti-chevron-left"></i>
       </button>
-      <div class="jobs-dots-wrap" id="svDotsWrap">
-        <?php for ($i = 0, $svPageCount = count($svPages); $i < $svPageCount; $i++): ?>
-        <button type="button" class="sv-dot<?= $i === 0 ? ' active' : '' ?>" onclick="svGoTo(<?= $i ?>)" aria-label="Trang <?= $i + 1 ?>"></button>
-        <?php endfor; ?>
-      </div>
+      <!-- Dots được JS tự build dựa vào data-total-pages -->
+      <div class="jobs-dots-wrap" id="svDotsWrap"></div>
       <button type="button" class="jobs-nav jobs-nav-next" id="svNext" aria-label="Trang sau">
         <i class="ti ti-chevron-right"></i>
       </button>

@@ -1,4 +1,4 @@
-﻿<?php require "config.php";?>
+<?php require "config.php";?>
 <?php
 $siteUserLoggedIn = isset($_SESSION['user']['id']) && (int)$_SESSION['user']['id'] > 0;
 $siteUserId = $siteUserLoggedIn ? (int)($_SESSION['user']['id'] ?? 0) : 0;

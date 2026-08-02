@@ -240,7 +240,7 @@ $dbExperienced = intval($db->fetch_object(true)->total);
             $skills = getCandidateSkills($candidate);
             
             $detailUrl = general::getInstance()->permalink((int)($candidate->id ?? 0), 'candidate_profile');
-            $cvUrl = isset($candidate->cv_url) && trim($candidate->cv_url) !== '' ? XC_URL . '/' . ltrim($candidate->cv_url, '/') : '#';
+            $cvUrl = isset($candidate->avatar_url) && trim($candidate->avatar_url) !== '' ? XC_URL . '/' . ltrim($candidate->avatar_url, '/') : '#';
           ?>
           <a href="<?php echo candidatePageH($detailUrl); ?>" class="cand-card" style="display:block;text-decoration:none;color:inherit;">
             <div class="cand-card-top">
@@ -252,8 +252,9 @@ $dbExperienced = intval($db->fetch_object(true)->total);
                 <?php endif; ?>
               </div> -->
               <div class="cand-avatar" style="background:<?php echo candidatePageH($color); ?>">
-                <?php echo candidatePageH($initials); ?>
-                <div class="online-dot"></div>
+               
+                <?php echo ($cvUrl) ? "<img src=" . candidatePageH($cvUrl) . " alt=\"" . candidatePageH($name) . "\">" : candidatePageH($initials); ?>
+                <!-- <div class="online-dot"></div> -->
               </div>
               <div class="cand-name"><?php echo candidatePageH($name); ?></div>
               <div class="cand-role"><?php echo candidatePageH($role); ?></div>
