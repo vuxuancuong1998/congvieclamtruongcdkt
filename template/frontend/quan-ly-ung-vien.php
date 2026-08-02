@@ -251,9 +251,9 @@ $dbExperienced = intval($db->fetch_object(true)->total);
                   <span class="card-action-btn card-action-link" role="link" tabindex="0" data-href="<?php echo candidatePageH($cvUrl); ?>" title="Tải CV"><i class="ti ti-download"></i></span>
                 <?php endif; ?>
               </div> -->
-              <div class="cand-avatar" style="background:<?php echo candidatePageH($color); ?>">
+              <div class="cand-avatar <?php echo ($cvUrl !== '#') ? 'has-img' : ''; ?>" style="background:<?php echo candidatePageH($color); ?>">
                
-                <?php echo ($cvUrl) ? "<img src=" . candidatePageH($cvUrl) . " alt=\"" . candidatePageH($name) . "\">" : candidatePageH($initials); ?>
+                <?php echo ($cvUrl !== '#') ? '<img src="' . candidatePageH($cvUrl) . '" alt="' . candidatePageH($name) . '">' : candidatePageH($initials); ?>
                 <!-- <div class="online-dot"></div> -->
               </div>
               <div class="cand-name"><?php echo candidatePageH($name); ?></div>

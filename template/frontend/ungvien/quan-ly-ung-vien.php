@@ -243,8 +243,9 @@ function candidate_initials($name) {
               <button type="button" class="card-action-btn fav" title="Yêu thích"><i class="ti ti-heart"></i></button>
               <button type="button" class="card-action-btn" title="Tải CV"><i class="ti ti-download"></i></button>
             </div>
-            <div class="cand-avatar" style="background:<?= h($candidate['color'] ?? '#0d4e96') ?>">
-              <?= h(candidate_initials($candidate['name'] ?? '')) ?>
+            <?php $cvUrl2 = isset($candidate['avatar_url']) && trim($candidate['avatar_url']) !== '' ? XC_URL . '/' . ltrim($candidate['avatar_url'], '/') : '#'; ?>
+            <div class="cand-avatar <?= ($cvUrl2 !== '#') ? 'has-img' : '' ?>" style="background:<?= h($candidate['color'] ?? '#0d4e96') ?>">
+              <?= ($cvUrl2 !== '#') ? '<img src="' . h($cvUrl2) . '" alt="' . h($candidate['name'] ?? '') . '">' : h(candidate_initials($candidate['name'] ?? '')) ?>
               <div class="<?= !empty($candidate['online']) ? 'online-dot' : 'offline-dot' ?>"></div>
             </div>
             <div class="cand-name"><?= h($candidate['name'] ?? '') ?></div>

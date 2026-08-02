@@ -196,9 +196,9 @@ body.jd-support-modal-open{overflow:hidden}
   </button>
   <?php } ?>
 
-  <button class="jd-btn jd-btn-outline" type="button" onclick="window.location.href='<?php echo jobDetailH(XC_URL.'/quan-ly-viec-lam.html'); ?>'">
-  <i class="ti ti-arrow-left"></i> Quay lại danh sách
-  </button>
+  <!-- <button class="jd-btn jd-btn-outline" type="button" onclick="window.location.href='<?php echo jobDetailH(XC_URL.'/quan-ly-viec-lam.html'); ?>'">
+  <i class="ti ti-arrow-left"></i> 
+  </button> -->
 </div>
 <?php if($jobApplyMessage !== ''){ ?>
 <div class="jd-highlight" style="margin-top:16px;color:<?php echo $jobApplyMessageType === 'success' ? '#15803d' : '#b42318'; ?>;background:<?php echo $jobApplyMessageType === 'success' ? '#eefbf3' : '#fff1f2'; ?>;border-color:<?php echo $jobApplyMessageType === 'success' ? '#b7ebc6' : '#fecdd3'; ?>;">
